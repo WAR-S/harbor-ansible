@@ -1,17 +1,21 @@
-Role Name
+Harbor playbook
 =========
 
-A brief description of the role goes here.
+А set of ansible roles for installing docker, docker compound, harbor
+
+Roles 
+--------------
+1) Preinstall (update&install  repo|package, add pgp verification key, create user&group, some PCI)
+2) Docker (install docker.ce(!set_version!), docker-compose(!set_version!), enable --now service)
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
 Dependencies
 ------------
