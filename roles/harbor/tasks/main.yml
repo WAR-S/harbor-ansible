@@ -1,0 +1,28 @@
+- include_vars: ../vars/main.yml
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: ../files/harbor/
+    dest: /srv/harbor/
+
+- name: Ansible find file eamples
+  find:
+    paths: /srv/harbor/
+    patterns: "*.sh"
+    register: files_matched
+  
+  # trace sh files
+- debug:
+    msg: "{{ files_matched.files }}"
+
+- name: Set execute bit
+  file:    
+    path: "{{ item.path }}"
+    mode: u=rx
+  with_items: "{{files_matched}}"
+
+- name: Run harbor script
+  shell: echo 1 | ./harbor.sh
+  register: command_output
+
+- debug: msg="{{command_output.stdout}}"

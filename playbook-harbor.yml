@@ -1,0 +1,8 @@
+---
+- name: harbor install
+  hosts: all
+  become: yes
+  roles:
+    - { role: harbor}
+  vars_files:
+    - ./roles/harbor/vars/main.yml

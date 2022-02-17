@@ -41,11 +41,9 @@
   shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   when: ansible_os_family == 'Debian'
 
-
 - name: Add Docker repo rpm
   get_url:
     url: "{{ rpm_url }}"
     dest: /etc/yum.repos.d/docer-ce.repo
   become: yes
   when: ansible_os_family == 'RedHat'
-

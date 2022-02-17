@@ -16,7 +16,7 @@
   when: ansible_os_family == 'RedHat' and offline_install == 'true'
 
 - name: Install RPM packages
-  shell: tar -xf /tmp/files/archive.tar.gz &&   yum install -y /tmp/files/docker/*.rpm
+  shell: tar -xf /tmp/files/archive-centos.tar.gz &&   yum install -y /tmp/files/docker/*.rpm
   when: ansible_os_family == 'RedHat' and offline_install == 'true'
     
 
