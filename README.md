@@ -35,13 +35,19 @@ Role Variables
 --------------
 You can install docker and docker-compose two steps:
 1) Online install, but in this way you mast set 2 variable 
-```{{ docker-ce-version-rpm|deb }} ,binary {{docker-compose-version}})```
+```
+{{ docker-ce-version-rpm|deb }} ,binary {{docker-compose-version}})
+```
 2) Offline installation involves the use of files supplied with playbook 
-```{{ ./roles/docker/files/}}```
+```
+{{ ./roles/docker/files/}}
+```
 
 
 If you want to use an offline installation, set the appropriate flag
-```{{offline_install = true}}```
+```
+{{offline_install = true}}
+```
 
 Author Information
 ------------------
