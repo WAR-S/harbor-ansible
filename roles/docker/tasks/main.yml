@@ -8,6 +8,13 @@ name: Install Docker
     state: {{ docker-ce-version-rpm }} 
   when: ansible_os_family == 'RedHat' and offline_install == 'false'
 
+##offline mode
+name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: ../files/docker-ce-20.10.9-3.el8.x86_64.rpm
+    dest: /tmp/docker-ce-20.10.9-3.el8.x86_64.rpm
+  when: ansible_os_family == 'RedHat' and offline_install == 'true'
+
 name: Check docker 
   shell: command -v docker >/dev/null 2>&1
   register: is_docker_install
@@ -38,6 +45,14 @@ name: Install docker-compose
       url : https://github.com/docker/compose/releases/download/{{docker-compose-version}}/docker-compose-linux-x86_64
       dest: /usr/local/bin/docker-compose
       mode: 'u+x,g+x'
+  when: ansible_os_family == 'RedHat' and offline_install == 'false'
+
+name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: ../files/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: u+x,g+x
+  when: ansible_os_family == 'RedHat' and offline_install == 'true'
 
 name: Check is docer-compose installed
   shell: command -v docker-compose >/dev/null 2>&1

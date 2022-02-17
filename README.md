@@ -12,8 +12,21 @@ Roles
 
 Requirements
 ------------
+Preinstall:
+Generate cert + key: 
+```
+openssl genrsa -out ca.key 4096
 
-
+openssl req -x509 -new -nodes -sha512 -days 3650 \
+ -subj "/C=CN/ST=Beijing/L=Beijing/O=example/OU=Personal/CN=yourdomain.com" \
+ -key ca.key \
+ -out ca.crt
+```
+Put this in folder:
+```
+  certificate: /harbor/ssl/ca.crt
+  private_key: /harbor/ssl/ca.key
+```
 Role Variables
 --------------
 
