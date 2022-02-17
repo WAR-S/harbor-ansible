@@ -1,0 +1,8 @@
+---
+- name: Preinstall things
+  hosts: all
+  become: yes
+  roles:
+    - { role: preinstall}
+  vars_files:
+    - ./roles/preinstall/vars/main.yml

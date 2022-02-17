@@ -1,49 +1,50 @@
----
-name: Add group "docker" to remote server
+- include_vars: ../vars/main.yml
+
+- name: Add group "docker" to remote server
   group:
     name: docker
     state: present
 
-name: Add the user 'dock' with a bash shell, appending the group 'docker'
+- name: Add the user 'dock' with a bash shell, appending the group 'docker'
   ansible.builtin.user:
     name: dock
     shell: /bin/bash
-    password: {{ protected_password }}
+    password: change_me
     groups: docker
     append: yes
 
-name: Setup authorized key id_rsa.pub
+- name: Setup authorized key id_rsa.pub
   authorized_key:
     user: dock
     state: present
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-name: Install required system packages deb_based
+- name: Install required system packages deb_based
   apt: name={{ item }} state=latest update_cache=yes
   loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
   when: ansible_os_family == 'Debian'
 
-name: Install required system packages rpm_based
+- name: Install required system packages rpm_based
   yum:
     name: ['yum-utils']
     state: present
   become: true
   when: ansible_os_family == 'RedHat'
 
-name: Add Docker GPG apt Key
+- name: Add Docker GPG apt Key
   apt_key:
-    url: {{apt_pgp}}
+    url: "{{  apt_pgp  }}"
     state: present
   when: ansible_os_family == 'Debian'
-
-name: Add Docker repo deb
-  ansible.builtin.shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  
+- name: Add Docker repo deb
+  shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   when: ansible_os_family == 'Debian'
 
 
-name: Add Docker repo rpm
+- name: Add Docker repo rpm
   get_url:
-    url: {{rpm_url}}
+    url: "{{ rpm_url }}"
     dest: /etc/yum.repos.d/docer-ce.repo
   become: yes
   when: ansible_os_family == 'RedHat'

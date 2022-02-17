@@ -47,7 +47,14 @@ You can install docker and docker-compose two steps:
 If you want to use an offline installation, set the appropriate flag
 ```
 {{offline_install = true}}
+Example run command:
+ansible-playbook -i inventory/stage/inventory playbook-docker.yml --extra-vars offline_install=true --user root -vv
 ```
+RUN INFORMATION
+------------------
+ansible-playbook -i inventory/stage/inventory playbook-preinstall.yml --extra-vars offline_install=true --user root -vv
+ansible-playbook -i inventory/stage/inventory playbook-docker.yml --extra-vars offline_install=true --user root -vv
+ansible-playbook -i inventory/stage/inventory playbook-harbor.yml --extra-vars --user root -vv
 
 Author Information
 ------------------

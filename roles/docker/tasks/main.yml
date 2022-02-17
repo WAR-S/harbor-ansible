@@ -1,72 +1,69 @@
-name: Update apt and install docker-ce
-  apt: update_cache=yes name=docker-ce state={{ docker-ce-version-deb }}
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state="{{ docker-ce-version-deb }}"
   when: ansible_os_family == 'Debian' and offline_install == 'false'
 
-name: Install Docker
+- name: Install Docker
   package:
     name: docker-ce
-    state: {{ docker-ce-version-rpm }} 
+    state: "{{ docker-ce-version-rpm }} "
   when: ansible_os_family == 'RedHat' and offline_install == 'false'
 
 ##offline mode
-name: Copy file with owner and permissions
+- name: Copy file with owner and permissions
   ansible.builtin.copy:
-    src: ../files/docker-ce-20.10.9-3.el8.x86_64.rpm
-    dest: /tmp/docker-ce-20.10.9-3.el8.x86_64.rpm
+    src: ../files/
+    dest: /tmp/files
   when: ansible_os_family == 'RedHat' and offline_install == 'true'
 
-name: Check docker 
+- name: Install RPM packages
+  shell: tar -xf /tmp/files/archive.tar.gz &&   yum install -y /tmp/files/docker/*.rpm
+  when: ansible_os_family == 'RedHat' and offline_install == 'true'
+    
+
+- name: Check docker 
   shell: command -v docker >/dev/null 2>&1
   register: is_docker_install
   ignore_errors: yes
   
-debug: msg="{{ is_docker_install.rc }}" # it returns rc 1
-debug: var=is_docker_install  
+- debug: msg="{{ is_docker_install.rc }}" # it returns rc 1
+- debug: var=is_docker_install  
 
-name: Run only if compose is installed
+- name: Run only if compose is installed
   shell: command docker -v
   register: print_version
   ignore_errors: yes
   when: is_docker_install.rc == 0
 
-debug: msg="{{ print_version.stdout }}"
+- debug: msg="{{ print_version.stdout }}"
 
-
-name: Enable and start docker-service
-  ansible.builtin.systemd:
-    name: docker
-    enabled: yes
-    masked: yes # autostart
-
-
-name: Install docker-compose
+- name: Install docker-compose
   remote_user: dock
-    get_url: 
-      url : https://github.com/docker/compose/releases/download/{{docker-compose-version}}/docker-compose-linux-x86_64
-      dest: /usr/local/bin/docker-compose
-      mode: 'u+x,g+x'
+  get_url: 
+    url : https://github.com/docker/compose/releases/download/{{docker-compose-version}}/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
   when: ansible_os_family == 'RedHat' and offline_install == 'false'
 
-name: Copy file with owner and permissions
+- name: Copy file with owner and permissions
   ansible.builtin.copy:
     src: ../files/docker-compose-linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: u+x,g+x
   when: ansible_os_family == 'RedHat' and offline_install == 'true'
 
-name: Check is docer-compose installed
+- name: Check is docer-compose installed
   shell: command -v docker-compose >/dev/null 2>&1
   register: is_docker_compose_install
   ignore_errors: yes
 
-debug: msg="{{ is_docker_compose_install.rc }}" # it returns rc 1
+- debug: msg="{{ is_docker_compose_install.rc }}" # it returns rc 1
 
-debug: var=is_docker_compose_install
+- debug: var=is_docker_compose_install
 
-name: Run only if compose is installed
+- name: Run only if compose is installed
   shell: command docker-compose --version
   register: print_version
   ignore_errors: yes
   when: is_docker_compose_install.rc == 0
 
-debug: msg="{{ print_version.stdout }}"
+- debug: msg="{{ print_version.stdout }}"
