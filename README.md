@@ -7,6 +7,7 @@ Roles
 --------------
 1) Preinstall (update&install  repo|package, add pgp verification key, create user&group, some PCI)
 2) Docker (install docker.ce(!set_version!), docker-compose(!set_version!), enable --now service)
+3) Install Harbor ()
 
 
 Requirements
