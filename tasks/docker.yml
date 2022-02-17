@@ -1,0 +1,22 @@
+---
+
+# check version
+name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state=#version
+  when: ansible_os_family == 'Debian'
+
+name: Install Docker
+  package:
+    name: docker-ce
+    state: 20.10.9-3.el8.x86_64.rpm
+  become: yes
+
+
+
+name: Enable and start docker-service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+    masked: yes # autostart
+
+

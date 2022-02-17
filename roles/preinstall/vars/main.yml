@@ -1,0 +1,4 @@
+#Add Docker GPG apt Key
+apt_pgp: "https://download.docker.com/linux/ubuntu/gpg"
+#Add Docker repo rpm
+rpm_url: "https://download.docker.com/linux/centos/docker-ce.repo"
