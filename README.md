@@ -52,10 +52,11 @@ ansible-playbook -i inventory/stage/inventory playbook-docker.yml --extra-vars o
 ```
 RUN INFORMATION
 ------------------
+```
 ansible-playbook -i inventory/stage/inventory playbook-preinstall.yml --extra-vars offline_install=true --user root -vv
 ansible-playbook -i inventory/stage/inventory playbook-docker.yml --extra-vars offline_install=true --user root -vv
 ansible-playbook -i inventory/stage/inventory playbook-harbor.yml --extra-vars --user root -vv
-
+```
 Author Information
 ------------------
 #Basiliy Fedorov (Junior DevOps in fil-it)
