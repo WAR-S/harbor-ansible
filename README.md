@@ -27,30 +27,22 @@ Put this in folder:
   certificate: /harbor/ssl/ca.crt
   private_key: /harbor/ssl/ca.key
 ```
+
+Change password in roles/harbor/fles/harbor/harbor.yml !
+
+
 Role Variables
 --------------
+You can install docker and docker-compose two steps:
+1) Online install, but in this way you mast set 2 variable 
+```{{ docker-ce-version-rpm|deb }} ,binary {{docker-compose-version}})```
+2) Offline installation involves the use of files supplied with playbook 
+```{{ ./roles/docker/files/}}```
 
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
+If you want to use an offline installation, set the appropriate flag
+```{{offline_install = true}}```
 
 Author Information
 ------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+#Basiliy Fedorov (Junior DevOps in fil-it)

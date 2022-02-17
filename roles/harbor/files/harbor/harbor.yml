@@ -14,8 +14,8 @@ https:
   # https port for harbor, default is 443
   port: 443
   # The path of cert and key files for nginx
-  certificate: /srv/harbor/ssl/ca.crt
-  private_key: /srv/harbor/ssl/ca.key
+  certificate: /harbor/ssl/ca.crt
+  private_key: /harbor/ssl/ca.key
 
 # Uncomment external_url if you want to enable external proxy
 # And when it enabled the hostname will no longer used
