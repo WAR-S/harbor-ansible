@@ -8,8 +8,8 @@
 - name: Ansible find file eamples
   find:
     paths: /srv/harbor/
-    patterns: "*.sh"
-    register: files_matched
+    patterns: '*.sh'
+  register: files_matched
   
   # trace sh files
 - debug:
