@@ -9,17 +9,18 @@
   when: ansible_os_family == 'RedHat' and offline_install == 'false'
 
 ##offline mode
-- name: Copy file with owner and permissions
-  ansible.builtin.copy:
-    src: ../files/
-    dest: /tmp/files
+
+- name: Extract archive-centos.tar.gz into /tmp/files/
+  ansible.builtin.unarchive:
+    src: /tmp/files/archive-centos.tar.gz
+    dest: /tmp/files/
+    remote_src: yes
   when: ansible_os_family == 'RedHat' and offline_install == 'true'
 
 - name: Install RPM packages
-  shell: tar -xf /tmp/files/archive-centos.tar.gz &&   yum install -y /tmp/files/docker/*.rpm
+  shell: yum install -y /tmp/files/docker/*.rpm
   when: ansible_os_family == 'RedHat' and offline_install == 'true'
     
-
 - name: Check docker 
   shell: command -v docker >/dev/null 2>&1
   register: is_docker_install

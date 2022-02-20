@@ -19,7 +19,7 @@
   file:    
     path: "{{ item.path }}"
     mode: u=rx
-  with_items: "{{files_matched}}"
+  with_items: "{{ files_matched }}"
 
 - name: Run harbor script
   shell: echo 1 | ./harbor.sh
