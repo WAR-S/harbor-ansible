@@ -1,5 +1,7 @@
 Harbor playbook
 =========
+![alt text](https://liaastuti.com/images/docker/18.png)
+
 
 А set of ansible roles for installing docker, docker compound, harbor
 

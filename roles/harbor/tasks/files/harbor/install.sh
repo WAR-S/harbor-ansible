@@ -25,11 +25,11 @@ while [ $# -gt 0 ]; do
             --help)
             note "$usage"
             exit 0;;
-            --with-notary)
+            notary)
             with_notary=true;;
-            --with-clair)
+            clair)
             with_clair=true;;
-            --with-chartmuseum)
+            chartmuseum)
             with_chartmuseum=true;;
             *)
             note "$usage"
@@ -75,7 +75,7 @@ then
     prepare_para="${prepare_para} --with-chartmuseum"
 fi
 
-./prepare $prepare_para
+./prepare.sh $prepare_para
 echo ""
 
 if [ -n "$(docker-compose ps -q)"  ]

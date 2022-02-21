@@ -5,24 +5,25 @@
     src: ../files/harbor/
     dest: /srv/harbor/
 
-- name: Ansible find file eamples
+- name: Ansible find .sh files 
   find:
     paths: /srv/harbor/
     patterns: '*.sh'
   register: files_matched
   
-  # trace sh files
+# trace sh files
 - debug:
     msg: "{{ files_matched.files }}"
 
 - name: Set execute bit
   file:    
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     mode: u=rx
-  with_items: "{{ files_matched }}"
+  with_items: "{{ files_matched.files|json_query('[*].path') }}"
 
-- name: Run harbor script
-  shell: echo 1 | ./harbor.sh
+#notary clair chartmuseum
+- name: Run harbor script with set scanners
+  shell: echo 1 | /srv/harbor/install.sh {{ scanner_list }}
   register: command_output
 
 - debug: msg="{{command_output.stdout}}"

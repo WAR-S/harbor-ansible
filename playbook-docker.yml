@@ -3,6 +3,6 @@
   hosts: all
   become: yes
   roles:
-    - { role: docker}
+    - { role: docker-offline}
   vars_files:
-    - ./roles/docker/vars/main.yml
+    - ./roles/docker-offline/vars/main.yml

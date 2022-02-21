@@ -1,0 +1,53 @@
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state="{{ docker-ce-version-deb }}"
+  notify: Restart Docker
+  when: ansible_os_family == 'Debian'
+
+- name: Install Docker
+  package:
+    name: docker-ce
+    state: "{{ docker-ce-version-rpm }} "
+  notify: Restart Docker
+  when: ansible_os_family == 'RedHat'
+
+- name: Check docker 
+  shell: command -v docker >/dev/null 2>&1
+  register: is_docker_install
+  ignore_errors: yes
+  
+- debug: msg="{{ is_docker_install.rc }}" # it returns rc 1
+- debug: var=is_docker_install  
+
+- name: Run only if compose is installed
+  shell: command docker -v
+  register: print_version
+  ignore_errors: yes
+  when: is_docker_install.rc == 0
+
+- debug: msg="{{ print_version.stdout }}"
+
+- name: Install docker-compose
+  remote_user: dock
+  get_url: 
+    url : https://github.com/docker/compose/releases/download/{{docker-compose-version}}/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Check is docer-compose installed
+  shell: command -v docker-compose >/dev/null 2>&1
+  register: is_docker_compose_install
+  ignore_errors: yes
+
+- debug: msg="{{ is_docker_compose_install.rc }}" # it returns rc 1
+
+- debug: var=is_docker_compose_install
+
+- name: Run only if compose is installed
+  shell: command docker-compose --version
+  register: print_version
+  ignore_errors: yes
+  when: is_docker_compose_install.rc == 0
+
+- debug: msg="{{ print_version.stdout }}"
