@@ -1,0 +1,6 @@
+- name: restart_docker
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+    masked: yes # autostart
+  #listen: "restart_docker"

@@ -1,3 +1,0 @@
-docker-ce-version-deb: "12"
-docker-ce-version-rpm: "13"
-docker-compose-version: "v2.2.3"
