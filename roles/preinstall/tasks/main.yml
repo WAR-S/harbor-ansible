@@ -1,5 +1,11 @@
 - include_vars: ../vars/main.yml
 
+- set_fact:
+    my_pass: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+
+- debug:
+   msg: "{{ my_pass }}" 
+
 - name: Add group "docker" to remote server
   group:
     name: docker
@@ -9,7 +15,7 @@
   ansible.builtin.user:
     name: dock
     shell: /bin/bash
-    password: change_me
+    password: " {{my_pass}} "
     groups: docker
     append: yes
 

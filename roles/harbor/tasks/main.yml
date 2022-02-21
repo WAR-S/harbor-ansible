@@ -1,5 +1,16 @@
 - include_vars: ../vars/main.yml
 
+- set_fact:
+    harbor_admin: "{{ lookup('password', '/dev/null length=10 chars=ascii_letters') }}"
+
+- set_fact:
+    harbor_db: "{{ lookup('password', '/dev/null length=10 chars=ascii_letters') }}"
+
+
+- debug:
+    msg: "{{ harbor_admin }}"
+
+
 - name: Copy file with owner and permissions
   ansible.builtin.copy:
     src: ../files/harbor/
@@ -21,9 +32,30 @@
     mode: u=rx
   with_items: "{{ files_matched.files|json_query('[*].path') }}"
 
+#inject password for admin and db
+#- name: inject generated password
+  #shell: sed -i 's/harbor_admin/{{ items }}'/' /srv/harbor/harbor.yml
+  #with_items: "{{ harbor_admin }}"
+
+- replace:
+    path: /srv/harbor/harbor.yml
+    regexp: 'harbor_admin_password: harbor_admin'
+    replace: 'harbor_admin_password: {{ harbor_admin }}'
+    backup: yes
+    #with_items: "{{ harbor_admin }}"
+
+- replace:
+    path: /srv/harbor/harbor.yml
+    regexp: '  password: harbor_db'
+    replace: '  password: {{ harbor_db }}'
+    backup: yes
 #notary clair chartmuseum
 - name: Run harbor script with set scanners
-  shell: echo 1 | /srv/harbor/install.sh {{ scanner_list }}
+  shell: /srv/harbor/install.sh {{ scanner_list }}
+  #{{ scanner_list }}
   register: command_output
 
 - debug: msg="{{command_output.stdout}}"
+
+- debug:
+   msg: "{{ harbor_admin }}" 

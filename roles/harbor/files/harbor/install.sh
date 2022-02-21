@@ -9,14 +9,16 @@ set +o noglob
 
 usage=$'Please set hostname and other necessary attributes in harbor.yml first. DO NOT use localhost or 127.0.0.1 for hostname, because Harbor needs to be accessed by external clients.
 Please set --with-notary if needs enable Notary in Harbor, and set ui_url_protocol/ssl_cert/ssl_cert_key in harbor.yml bacause notary must run under https. 
-Please set --with-clair if needs enable Clair in Harbor
+Please set --with-trivy if needs enable Trivy in Harbor
 Please set --with-chartmuseum if needs enable Chartmuseum in Harbor'
 item=0
 
 # notary is not enabled by default
 with_notary=$false
-# clair is not enabled by default
+# clair is deprecated
 with_clair=$false
+# trivy is not enabled by default
+with_trivy=$false
 # chartmuseum is not enabled by default
 with_chartmuseum=$false
 
@@ -29,6 +31,8 @@ while [ $# -gt 0 ]; do
             with_notary=true;;
             clair)
             with_clair=true;;
+            trivy)
+            with_trivy=true;;
             chartmuseum)
             with_chartmuseum=true;;
             *)
@@ -37,6 +41,12 @@ while [ $# -gt 0 ]; do
         esac
         shift || true
 done
+
+if [ $with_clair ]
+then
+    error "Clair is deprecated please remove it from installation arguments !!!"
+    exit 1
+fi
 
 workdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $workdir
@@ -66,9 +76,9 @@ if [ $with_notary ]
 then
     prepare_para="${prepare_para} --with-notary"
 fi
-if [ $with_clair ]
+if [ $with_trivy ]
 then
-    prepare_para="${prepare_para} --with-clair"
+    prepare_para="${prepare_para} --with-trivy"
 fi
 if [ $with_chartmuseum ]
 then

@@ -26,8 +26,8 @@ openssl req -x509 -new -nodes -sha512 -days 3650 \
 ```
 Put this in folder:
 ```
-  certificate: /harbor/ssl/ca.crt
-  private_key: /harbor/ssl/ca.key
+  certificate: /srv/harbor/ssl/ca.crt
+  private_key: /srv/harbor/ssl/ca.key
 ```
 
 Change password in roles/harbor/fles/harbor/harbor.yml !
@@ -55,9 +55,9 @@ ansible-playbook -i inventory/stage/inventory playbook-docker.yml --extra-vars o
 RUN INFORMATION
 ------------------
 ```
-ansible-playbook -i inventory/stage/inventory playbook-preinstall.yml --extra-vars offline_install=true --user root -vv
-ansible-playbook -i inventory/stage/inventory playbook-docker.yml --extra-vars offline_install=true --user root -vv
-ansible-playbook -i inventory/stage/inventory playbook-harbor.yml --extra-vars --user root -vv
+ansible-playbook -i inventory/stage/inventory playbook-preinstall.yml --user root -vv
+ansible-playbook -i inventory/stage/inventory playbook-docker.yml --user root -vv
+ansible-playbook -i inventory/stage/inventory playbook-harbor.yml --user=root   --extra-vars=scanner_list="notary clair"
 ```
 Author Information
 ------------------
