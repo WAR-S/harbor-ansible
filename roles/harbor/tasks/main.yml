@@ -58,4 +58,4 @@
 - debug: msg="{{command_output.stdout}}"
 
 - debug:
-   msg: "{{ harbor_admin }}" 
+   msg: "harbor_admin_password is {{ harbor_admin }}" 
